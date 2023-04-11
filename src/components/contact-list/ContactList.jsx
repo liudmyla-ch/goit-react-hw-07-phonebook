@@ -9,12 +9,12 @@ const ContactList = () => {
 
   let visibleContacts;
 
-  if (contacts.data.length > 0) {
+  if (contacts?.length > 0) {
     filters !== ''
-      ? (visibleContacts = contacts.data.filter(contact =>
+      ? (visibleContacts = contacts.filter(contact =>
           contact.name.toLowerCase().includes(filters.toLowerCase())
         ))
-      : (visibleContacts = contacts.data);
+      : (visibleContacts = contacts);
   }
 
   return (

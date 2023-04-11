@@ -2,8 +2,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
 import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 const ContactForm = () => {
   const contacts = useSelector(getContacts);
@@ -11,16 +11,17 @@ const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = values => {
-    const { name, number } = values;
+    const { name, phone } = values;
+   
     if (
-      (contacts.data.length > 0) &
-      contacts.data.some(
+      (contacts.length > 0) &
+      contacts.some(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
       return alert(`${name} is already in contacts!`);
     } else {
-      dispatch(addContact(name, number));
+      dispatch(addContact({name, phone}));
     }
   };
 
@@ -31,7 +32,7 @@ const ContactForm = () => {
         "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
       )
       .required('Name is required'),
-    number: Yup.string()
+    phone: Yup.string()
       .matches(
         /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
         'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
@@ -41,7 +42,7 @@ const ContactForm = () => {
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
         handleSubmit(values);
@@ -59,7 +60,7 @@ const ContactForm = () => {
           </label>
           <label className={css.label}>
             Number
-            <Field type="tel" name="number" className={css.input} required />
+            <Field type="tel" name="phone" className={css.input} required />
             {errors.number && touched.number && (
               <div className={css.error}>{errors.number}</div>
             )}
