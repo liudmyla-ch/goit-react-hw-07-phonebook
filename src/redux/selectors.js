@@ -11,7 +11,6 @@ export const getError = state => state.contacts.error;
 export const getVisibleContacts = createSelector(
   [getContacts, getFilter],
   (contacts, filters) => {
-    console.log(getContacts, contacts)
     if (contacts.length > 0) {
       if (filters !== '') {
         return contacts.filter(contact =>
