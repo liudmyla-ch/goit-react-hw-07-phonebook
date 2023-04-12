@@ -5,7 +5,7 @@ import Contact from 'components/contact/Contact';
 
 const ContactList = () => {
   const visibleContacts = useSelector(getVisibleContacts);
-
+ 
   return (
     <ul className={css.list}>
       {visibleContacts.map(contact => (
